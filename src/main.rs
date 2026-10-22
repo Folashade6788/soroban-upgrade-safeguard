@@ -1151,7 +1151,7 @@ struct ExtractArgs {
     rpc_headers: Vec<String>,
 
     /// Print only the interface hash, with no other output.
-    #[arg(long)]
+    #[arg(long, conflicts_with_all = ["compact", "no_env_meta", "no_duplicates", "no_scope"])]
     hash_only: bool,
 
     /// Destination path for the extracted output. Defaults to stdout.
