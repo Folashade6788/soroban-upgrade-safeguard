@@ -109,6 +109,15 @@ The configuration that controls which findings fail a run. Policies can:
 
 **See also:** [Named Policy Profiles](named_policy_profiles.md)
 
+### Policy Profile
+A named set of compatibility rules that can be selected from configuration or the CLI. Policy profiles allow one repository to apply different validation policies for different contexts — such as relaxed rules during local development, stricter enforcement in pull requests, and release-specific validation for production candidates — without duplicating suppression rules or maintaining separate configuration files.
+
+**Use with:** `--profile <NAME>` flag or `SOROBAN_SAFEGUARD_PROFILE` environment variable
+
+**Example profiles:** `dev` (permissive), `pr` (strict), `release` (comprehensive), `emergency` (minimal)
+
+**See also:** [Named Policy Profiles](named_policy_profiles.md)
+
 ### Compatibility Budget
 A bounded **count** of findings allowed at a given scope, evaluated after
 analysis without changing how any individual finding is classified,
