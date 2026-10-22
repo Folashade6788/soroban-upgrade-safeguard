@@ -255,7 +255,6 @@ pub struct DiffReport {
     pub findings: Vec<Finding>,
 }
 
-#[allow(dead_code)]
 impl DiffReport {
     pub fn critical_count(&self) -> usize {
         self.findings

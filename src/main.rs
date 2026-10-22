@@ -6668,7 +6668,6 @@ fn suppressions_for_pair(
     Ok(settings.apply_policy(base))
 }
 
-#[allow(dead_code)]
 struct GapContract {
     name: String,
     old_path: PathBuf,

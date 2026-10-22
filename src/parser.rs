@@ -106,7 +106,6 @@ pub struct SorobanMetadata {
 #[cfg(test)]
 /// It is referenced by this module's own tests; production decoding goes
 /// through the version-aware [`crate::decoder_registry`] path.
-#[allow(dead_code)]
 fn decode_spec_entries(data: &[u8]) -> Result<Vec<ScSpecEntry>, Error> {
     if data.is_empty() {
         // A present but empty contractspecv0 section is unusual but valid:
