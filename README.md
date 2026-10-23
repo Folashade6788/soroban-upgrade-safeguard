@@ -640,6 +640,14 @@ IDs correctly — none of which require a contract ID:
 soroban-upgrade-safeguard preflight --rpc-url https://soroban-testnet.stellar.org
 ```
 
+Only HTTPS endpoints are accepted by default. To check a locally running RPC
+endpoint, pass `--allow-http-local`; it permits plain HTTP for loopback hosts
+(`localhost`, `127.0.0.1`, `::1`) only:
+
+```bash
+soroban-upgrade-safeguard preflight --rpc-url http://localhost:8000 --allow-http-local
+```
+
 The check confirms three things in sequence:
 
 - **Transport**: the endpoint responds to an HTTP request (status code reported).
@@ -679,9 +687,16 @@ soroban-upgrade-safeguard doctor --format json
 
 `print-schema` writes machine-readable JSON Schemas (Draft-07), editor completion catalogs, or reference documentation directly from the running binary — no WASM inputs, no config, and no network access:
 
+`--target` selects the schema to print: `report` (the default), `config`,
+`manifest`, or `impact-graph`. The `--config` and `--manifest` flags are
+shorthands for `--target config` and `--target manifest`, respectively.
+
 ```bash
 # Print report JSON Schema (default)
 soroban-upgrade-safeguard print-schema
+
+# Print impact graph JSON Schema
+soroban-upgrade-safeguard print-schema --target impact-graph
 
 # Print configuration file JSON Schema (.safeguard.toml / JSON)
 soroban-upgrade-safeguard print-schema --config
