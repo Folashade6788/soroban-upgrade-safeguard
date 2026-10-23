@@ -563,3 +563,108 @@ fn extract_compact_with_output_file_writes_single_line() {
 
     fs::remove_file(&out_path).unwrap();
 }
+
+// --- --hash-only conflict tests ---------------------------------------------
+
+#[test]
+fn extract_hash_only_conflicts_with_compact() {
+    let path = wasm("v1.wasm");
+    let output = bin()
+        .arg("extract")
+        .arg(path)
+        .arg("--hash-only")
+        .arg("--compact")
+        .output()
+        .expect("failed to run binary");
+
+    assert_eq!(
+        output.status.code(),
+        Some(2),
+        "--hash-only with --compact must exit with code 2"
+    );
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("conflict") || stderr.contains("cannot be used"),
+        "stderr must mention the conflict: {stderr}"
+    );
+}
+
+#[test]
+fn extract_hash_only_conflicts_with_no_env_meta() {
+    let path = wasm("v1.wasm");
+    let output = bin()
+        .arg("extract")
+        .arg(path)
+        .arg("--hash-only")
+        .arg("--no-env-meta")
+        .output()
+        .expect("failed to run binary");
+
+    assert_eq!(
+        output.status.code(),
+        Some(2),
+        "--hash-only with --no-env-meta must exit with code 2"
+    );
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("conflict") || stderr.contains("cannot be used"),
+        "stderr must mention the conflict: {stderr}"
+    );
+}
+
+#[test]
+fn extract_hash_only_conflicts_with_no_duplicates() {
+    let path = wasm("v1.wasm");
+    let output = bin()
+        .arg("extract")
+        .arg(path)
+        .arg("--hash-only")
+        .arg("--no-duplicates")
+        .output()
+        .expect("failed to run binary");
+
+    assert_eq!(
+        output.status.code(),
+        Some(2),
+        "--hash-only with --no-duplicates must exit with code 2"
+    );
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("conflict") || stderr.contains("cannot be used"),
+        "stderr must mention the conflict: {stderr}"
+    );
+}
+
+#[test]
+fn extract_hash_only_conflicts_with_no_scope() {
+    let path = wasm("v1.wasm");
+    let output = bin()
+        .arg("extract")
+        .arg(path)
+        .arg("--hash-only")
+        .arg("--no-scope")
+        .output()
+        .expect("failed to run binary");
+
+    assert_eq!(
+        output.status.code(),
+        Some(2),
+        "--hash-only with --no-scope must exit with code 2"
+    );
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("conflict") || stderr.contains("cannot be used"),
+        "stderr must mention the conflict: {stderr}"
+    );
+}
+
+#[test]
+fn extract_hash_only_alone_still_works() {
+    let path = wasm("v1.wasm");
+    let (stdout, code) = extract(&[path.to_str().unwrap(), "--hash-only"]);
+
+    assert_eq!(code, 0, "--hash-only on its own must still succeed");
+    let hash = stdout.trim();
+    assert_eq!(hash.len(), 64);
+    assert!(hash.chars().all(|c| c.is_ascii_hexdigit()));
+}

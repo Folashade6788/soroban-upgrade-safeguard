@@ -109,19 +109,14 @@ The configuration that controls which findings fail a run. Policies can:
 
 **See also:** [Named Policy Profiles](named_policy_profiles.md)
 
-### Strict Mode
-A run setting that makes **Warning** findings fail the run in addition to **Critical** ones. Without it, only unsuppressed Critical findings produce a failing exit code; with it, any unsuppressed Warning or Critical finding does. **Info** findings never affect the exit code. A manifest can enable strict mode per pair, but it cannot disable `--strict` passed on the command line.
+### Policy Profile
+A named set of compatibility rules that can be selected from configuration or the CLI. Policy profiles allow one repository to apply different validation policies for different contexts — such as relaxed rules during local development, stricter enforcement in pull requests, and release-specific validation for production candidates — without duplicating suppression rules or maintaining separate configuration files.
 
-**Use with:** `soroban-upgrade-safeguard <OLD_WASM> <NEW_WASM> --strict`
+**Use with:** `--profile <NAME>` flag or `SOROBAN_SAFEGUARD_PROFILE` environment variable
 
-**See also:** [Strict mode](../README.md#strict-mode)
+**Example profiles:** `dev` (permissive), `pr` (strict), `release` (comprehensive), `emergency` (minimal)
 
-### Policy Bundle
-A small, versioned, signed document that carries an organization's centrally governed compatibility policy, resource limits, and rule documentation. It is opt-in, verified against trusted public keys before anything is applied, and can only tighten the local policy, never loosen it. A bundle that fails verification aborts the run before any WASM is loaded.
-
-**Use with:** `soroban-upgrade-safeguard <OLD_WASM> <NEW_WASM> --policy-bundle <PATH_OR_URL> --trusted-bundle-key <ID=PATH>`
-
-**See also:** [Signed Policy Bundles](policy-bundles.md)
+**See also:** [Named Policy Profiles](named_policy_profiles.md)
 
 ### Compatibility Budget
 A bounded **count** of findings allowed at a given scope, evaluated after
